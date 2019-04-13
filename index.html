@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>焦点图轮播</title>
+	<style type="text/css">
+		*{margin:0;padding:0;list-style: none;}
+		#focus_warper{width: 500px;height: 280px;margin:50px auto;position: relative;overflow: hidden;}
+		#focus{width: 3000px;position: absolute;left: 0;top: 0; height: 280px;}
+		#focus li{float: left;}
+		ol{position: absolute;width: 240px;height: 20px;left: 150px;bottom: 10px;}
+		ol li{width: 15px;height: 15px;margin: 0 10px; background-color: #000;border-radius: 10px;float: left;color: #fff;text-align:center;line-height: 15px;}
+		.cur{background-color: blue;}
+		span{width: 50px;height: 30px;display: block;font-size: 50px;color: #fff;text-align: center;line-height: 30px;cursor: pointer;}
+		.prev{position: absolute;left: 20px;top: 50%;}
+		.next{position: absolute;right: 20px;top: 50%;}
+	</style>
+</head>
+<body>
+	<div id="focus_warper">
+		<ul id="focus">
+			<li><img src="images/1.jpg" alt=""></li>
+			<li><img src="images/2.jpg" alt=""></li>
+			<li><img src="images/3.jpg" alt=""></li>
+			<li><img src="images/4.jpg" alt=""></li>
+			<li><img src="images/5.jpg" alt=""></li>
+			<li><img src="images/6.jpg" alt=""></li>
+			<li><img src="images/1.jpg" alt=""></li>
+		</ul>
+		<ol>
+			<li class="cur">1</li>
+			<li>2</li>
+			<li>3</li>
+			<li>4</li>
+			<li>5</li>
+			<li>6</li>
+		</ol>
+		<span class="prev">&lt</span>
+		<span class="next">&gt</span>
+	</div>
+	<script>
+		var ul = document.getElementById('focus');
+		var lis = document.getElementsByTagName('ol')[0].getElementsByTagName('li');
+		var prev = document.getElementsByClassName('prev')[0];
+		var next = document.getElementsByClassName('next')[0];
+		var timer = null;
+		var init = 0;
+		console.log(prev);
+		function start(){
+				timer = setInterval(function(){
+					init++;	
+					init %= 6;
+					ul.style.left = init * -500 + 'px';	
+					for (var i = 0; i < lis.length; i++) {
+						lis[i].className = '';
+					}
+					lis[init].className = 'cur';
+			},2000)
+		}
+		start();
+		ul.onmouseover = function(){
+			clearInterval(timer);
+		}
+		ul.onmouseout =function(){
+			start();
+		}
+
+		for(var i = 0;i<lis.length;i++){
+			lis[i].index = i;
+			lis[i].onmouseover = function(){
+				clearInterval(timer);
+				for(var j = 0;j<lis.length;j++){
+					lis[j].className = '';
+				}
+				this.className = 'cur';
+				init = this.index;
+				ul.style.left = init * -500 + 'px';
+			}
+		}
+		prev.onclick = function(){
+			clearInterval(timer);
+			init--;
+			if(init < 0){
+				init = 5;
+			}
+			ul.style.left = init * -500 + 'px';
+			for (var i = 0; i < lis.length; i++) {
+				lis[i].className = '';
+			}
+			lis[init].className = 'cur';
+			console.log(init);
+		}
+		next.onclick = function(){
+			clearInterval(timer);
+			init++;
+			init %= 6;
+			ul.style.left = init * -500 + 'px';
+			for (var i = 0; i < lis.length; i++) {
+				lis[i].className = '';
+			}
+			lis[init].className = 'cur';
+			console.log(init);
+		}
+		
+
+
+		
+		
+	</script>
+</body>
+</html>
